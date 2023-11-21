@@ -2,22 +2,32 @@ package com.example.pixpalapp.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor
+@Component
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "image_path")
+    private String imagePath;
+
+    @Column
     private String username;
+
+    @Column
     private String email;
+
+    @Column
     private String password;
+
+    @ManyToOne
+    private Role role;
 }

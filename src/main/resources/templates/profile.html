@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+
+<img th:src="${user.getImagePath()}" style="max-width: 150px; max-height: 150px;" alt="test">
+
+<form th:action="@{/profile}" method="POST" enctype="multipart/form-data">
+    <div>
+        <label>Avatar</label>
+        <input type="file" name="file" id="file" />
+        <!--        <p th:each="error: ${#fields.errors('firstName')}"-->
+        <!--           th:text="${error}">Validation error</p>-->
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

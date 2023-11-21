@@ -15,8 +15,14 @@ public class Cell {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String color;
+
+    @Column
     private int x;
+
+    @Column
     private int y;
 
     @ManyToOne

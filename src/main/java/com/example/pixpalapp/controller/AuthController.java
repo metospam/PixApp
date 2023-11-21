@@ -1,6 +1,5 @@
 package com.example.pixpalapp.controller;
 
-import com.example.pixpalapp.model.User;
 import com.example.pixpalapp.model.dto.UserDto;
 import com.example.pixpalapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,24 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
-
-    @GetMapping("/login")
-    public String loginForm(){
-        return "login";
-    }
+     UserService userService;
 
     @GetMapping("/register")
     public String registerForm(Model model){
         model.addAttribute("dto", new UserDto());
-
         return "register";
     }
 
     @PostMapping("/register")
     public String registerForm(@ModelAttribute UserDto dto){
-        userService.saveDto(dto);
-
+        userService.saveUser(dto);
         return "redirect:/login";
     }
 }

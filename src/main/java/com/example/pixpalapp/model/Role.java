@@ -5,22 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Table(name = "palettes")
+@Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Palette {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
-
-    @ManyToMany
-    private List<Color> colors;
+    @Column
+    private String name;
 }
