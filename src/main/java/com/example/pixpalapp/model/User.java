@@ -19,10 +19,10 @@ public class User {
     @Column(name = "image_path")
     private String imagePath;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column

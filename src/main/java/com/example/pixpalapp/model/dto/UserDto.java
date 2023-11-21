@@ -1,19 +1,18 @@
 package com.example.pixpalapp.model.dto;
 
 
+import com.example.pixpalapp.validator.PasswordConfirm;
+import com.example.pixpalapp.validator.UniqueEmail;
+import com.example.pixpalapp.validator.UniqueUsername;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
-@Getter
-@Setter
 @Data
+@PasswordConfirm
+@UniqueEmail
+@UniqueUsername
 public class UserDto {
-
-    @NotBlank
-    private MultipartFile image;
 
     @NotBlank
     private String username;
@@ -24,4 +23,7 @@ public class UserDto {
     @NotBlank
     private String password;
 
+    @NotBlank
+    @Transient
+    private String confirmPassword;
 }

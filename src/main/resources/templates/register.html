@@ -1,31 +1,41 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="eu">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Registration</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+</head>
 <body>
-<form th:action="@{/register}" th:object="${dto}" method="POST" enctype="utf8">
-    <div>
-        <label>Username</label>
-        <input th:field="*{username}"/>
-<!--        <p th:each="error: ${#fields.errors('firstName')}"-->
-<!--           th:text="${error}">Validation error</p>-->
-    </div>
-    <div>
-        <label>Email</label>
-        <input type="email" th:field="*{email}"/>
-<!--        <p th:each="error : ${#fields.errors('email')}"-->
-<!--           th:text="${error}">Validation error</p>-->
-    </div>
-    <div>
-        <label>Password</label>
-        <input type="password" th:field="*{password}"/>
-<!--        <p th:each="error : ${#fields.errors('password')}"-->
-<!--           th:text="${error}">Validation error</p>-->
-    </div>
-<!--    <div>-->
-<!--        <label th:text="#{label.user.confirmPass}">confirm</label>-->
-<!--        <input type="password" th:field="*{matchingPassword}"/>-->
-<!--    </div>-->
-    <button type="submit">Submit</button>
-</form>
+<div class="container">
+    <form th:action="@{/register}" th:object="${dto}" method="POST" class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <div th:if="${#fields.hasErrors()}" th:text="${#fields.errors()[0]}" class="alert alert-danger"></div>
+        <p>
+            <label class="sr-only" for="username">Username</label>
+            <input type="text" id="username" th:field="*{username}" required class="form-control" placeholder="Username"/>
+        </p>
 
-<a th:href="@{/login}">login</a>
+        <p>
+            <label class="sr-only" for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" required class="form-control" placeholder="Email"/>
+        </p>
+
+        <p>
+            <label class="sr-only" for="password">Password</label>
+            <input type="password" id="password" name="password" required class="form-control" placeholder="Password"/>
+        </p>
+
+        <p>
+            <label class="sr-only" for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required class="form-control" placeholder="Confirm Password"/>
+        </p>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
 </body>
 </html>

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -45,14 +44,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(CustomUserDetails userDetails, MultipartFile file) throws IOException {
-        String filename = storageService.store(file);
+    public void updateUser(CustomUserDetails userDetails, MultipartFile file){
+        Optional<User> user = userRepository.findById(userDetails.getId());
 
-        Optional<User> currentUser = userRepository.findById(userDetails.getId());
-        currentUser.ifPresent(user -> user.setImagePath("/images/" + filename));
+        user.ifPresent(value -> {
+            String filename = storageService.store(file);
+            value.setImagePath("/images/" + filename);
+            userRepository.save(value);
+        });
     }
 
-    private User setAttributesFromDto(User user, UserDto dto){
+    private User setAttributesFromDto(User user, UserDto dto) {
         user.setEmail(dto.getEmail());
         user.setUsername(dto.getUsername());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));

@@ -17,15 +17,19 @@ public class StorageServiceImpl implements StorageService {
     private String uploadPath;
 
     @Override
-    public String store(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
+    public String store(MultipartFile file) {
+        try {
+            String fileName = file.getOriginalFilename();
 
-        // Define the path where you want to store the file
-        Path destinationPath = Path.of(uploadPath + fileName);
+            // Define the path where you want to store the file
+            Path destinationPath = Path.of(uploadPath + fileName);
 
-        // Copy the file to the destination path
-        Files.copy(file.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
+            // Copy the file to the destination path
+            Files.copy(file.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
-        return fileName;
+            return fileName;
+        } catch (IOException e) {
+            return null;
+        }
     }
 }
