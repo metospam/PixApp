@@ -1,8 +1,8 @@
 package com.example.pixpalapp.service.Impl;
 
 import com.example.pixpalapp.config.CustomUserDetails;
-import com.example.pixpalapp.model.User;
-import com.example.pixpalapp.model.dto.UserDto;
+import com.example.pixpalapp.entity.User;
+import com.example.pixpalapp.dto.UserDto;
 import com.example.pixpalapp.repository.UserRepository;
 import com.example.pixpalapp.service.StorageService;
 import com.example.pixpalapp.service.UserService;

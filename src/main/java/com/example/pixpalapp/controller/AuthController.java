@@ -1,6 +1,6 @@
 package com.example.pixpalapp.controller;
 
-import com.example.pixpalapp.model.dto.UserDto;
+import com.example.pixpalapp.dto.UserDto;
 import com.example.pixpalapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

@@ -1,7 +1,7 @@
 package com.example.pixpalapp.service;
 
 import com.example.pixpalapp.config.CustomUserDetails;
-import com.example.pixpalapp.model.dto.UserDto;
+import com.example.pixpalapp.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 

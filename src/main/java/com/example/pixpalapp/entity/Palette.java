@@ -1,30 +1,26 @@
-package com.example.pixpalapp.model;
+package com.example.pixpalapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "cells")
+@Table(name = "palettes")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cell {
+public class Palette {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String color;
-
-    @Column
-    private int x;
-
-    @Column
-    private int y;
-
     @ManyToOne
-    private Drawing drawing;
+    private User user;
+
+    @ManyToMany
+    private List<Color> colors;
 }

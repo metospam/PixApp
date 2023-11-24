@@ -1,4 +1,4 @@
-package com.example.pixpalapp.model.dto;
+package com.example.pixpalapp.dto;
 
 
 import com.example.pixpalapp.validator.PasswordConfirm;

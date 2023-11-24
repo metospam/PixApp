@@ -1,5 +1,4 @@
-package com.example.pixpalapp.model;
-
+package com.example.pixpalapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,22 +6,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "drawings")
+@Table(name = "cells")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Drawing {
+public class Cell {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String name;
+    private String color;
 
     @Column
-    private int size;
+    private int x;
+
+    @Column
+    private int y;
 
     @ManyToOne
-    private User user;
+    private Drawing drawing;
 }

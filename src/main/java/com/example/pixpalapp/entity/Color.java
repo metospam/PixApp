@@ -1,4 +1,4 @@
-package com.example.pixpalapp.model;
+package com.example.pixpalapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,16 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "colors")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Role {
+public class Color {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String name;
+    private String code;
 }

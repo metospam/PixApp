@@ -1,7 +1,7 @@
 package com.example.pixpalapp.controller;
 
 import com.example.pixpalapp.config.CustomUserDetails;
-import com.example.pixpalapp.model.User;
+import com.example.pixpalapp.entity.User;
 import com.example.pixpalapp.repository.UserRepository;
 import com.example.pixpalapp.service.UserService;
 import lombok.AccessLevel;

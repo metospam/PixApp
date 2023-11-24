@@ -1,4 +1,4 @@
-package com.example.pixpalapp.model;
+package com.example.pixpalapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

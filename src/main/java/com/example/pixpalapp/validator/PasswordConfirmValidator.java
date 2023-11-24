@@ -1,6 +1,6 @@
 package com.example.pixpalapp.validator;
 
-import com.example.pixpalapp.model.dto.UserDto;
+import com.example.pixpalapp.dto.UserDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

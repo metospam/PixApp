@@ -1,6 +1,6 @@
 package com.example.pixpalapp.config;
 
-import com.example.pixpalapp.model.User;
+import com.example.pixpalapp.entity.User;
 import com.example.pixpalapp.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

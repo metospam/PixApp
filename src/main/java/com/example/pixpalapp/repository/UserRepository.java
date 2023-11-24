@@ -1,6 +1,6 @@
 package com.example.pixpalapp.repository;
 
-import com.example.pixpalapp.model.User;
+import com.example.pixpalapp.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
