@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
-import java.util.function.Function;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
