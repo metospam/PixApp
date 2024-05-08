@@ -1,42 +1,81 @@
 package com.example.pixpalapp.controller;
 
 import com.example.pixpalapp.dto.UserDto;
+import com.example.pixpalapp.manager.ErrorManager;
+import com.example.pixpalapp.payload.Request.JwtRequest;
+import com.example.pixpalapp.payload.Request.UserCreateRequest;
+import com.example.pixpalapp.payload.Response.JwtResponse;
+import com.example.pixpalapp.security.details.CustomUserDetails;
+import com.example.pixpalapp.security.jwt.JwtTokenProvider;
+import com.example.pixpalapp.service.AuthService;
 import com.example.pixpalapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/")
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AuthController {
 
-     UserService userService;
+    UserService userService;
+    JwtTokenProvider jwtTokenProvider;
+    AuthService authService;
+    ErrorManager errorManager;
 
-    @GetMapping("/register")
-    public String registerForm(Model model){
-        model.addAttribute("dto", new UserDto());
-        return "register";
+    @PostMapping("/login")
+    public ResponseEntity<?> handleAuthUser(@RequestBody @Valid JwtRequest jwtRequest,
+                                            BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            FieldError fieldError = bindingResult.getFieldErrors().get(0);
+
+            return ResponseEntity.unprocessableEntity().body(errorManager.displayError(fieldError));
+        }
+
+        UserDto userDto = UserDto.builder()
+                .username(jwtRequest.getUsername())
+                .password(jwtRequest.getPassword())
+                .build();
+
+        try {
+            CustomUserDetails userDetails = (CustomUserDetails) userService.loadUserByUsername(userDto.getUsername());
+            String token = jwtTokenProvider.generateToken(userDetails);
+
+            authService.authenticate(userDto);
+
+            return ResponseEntity.ok(new JwtResponse(token));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @PostMapping("/register")
-    public String registerForm(@Valid @ModelAttribute("dto") UserDto dto,
-                               BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("dto", dto);
-            return "register";
+    public ResponseEntity<?> handleRegisterUser(@RequestBody @Valid UserCreateRequest userRequest,
+                                                BindingResult bindingResult) throws IOException {
+        if (bindingResult.hasErrors()) {
+            FieldError fieldError = bindingResult.getFieldErrors().get(0);
+
+            return ResponseEntity.unprocessableEntity().body(errorManager.displayError(fieldError));
         }
 
-        userService.saveUser(dto);
-        return "redirect:/login";
+        UserDto userDto = UserDto.builder()
+                .username(userRequest.getUsername())
+                .password(userRequest.getPassword())
+                .email(userRequest.getEmail())
+                .build();
+
+        userService.saveUser(userDto);
+
+        return ResponseEntity.ok().build();
     }
 }

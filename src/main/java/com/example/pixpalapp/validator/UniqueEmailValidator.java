@@ -1,7 +1,8 @@
 package com.example.pixpalapp.validator;
 
-import com.example.pixpalapp.dto.UserDto;
+import com.example.pixpalapp.payload.Request.UserCreateRequest;
 import com.example.pixpalapp.repository.UserRepository;
+import com.example.pixpalapp.validator.annotaion.UniqueEmail;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AccessLevel;
@@ -10,13 +11,13 @@ import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, UserDto> {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, UserCreateRequest> {
 
     UserRepository userRepository;
 
     @Override
-    public boolean isValid(UserDto userDto, ConstraintValidatorContext context) {
-        boolean valid = userRepository.findByEmail(userDto.getEmail()).isEmpty();
+    public boolean isValid(UserCreateRequest userRequest, ConstraintValidatorContext context) {
+        boolean valid = userRepository.findByEmail(userRequest.getEmail()).isEmpty();
 
         if(!valid){
             context.disableDefaultConstraintViolation();

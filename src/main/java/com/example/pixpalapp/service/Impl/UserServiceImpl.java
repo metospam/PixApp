@@ -1,23 +1,23 @@
 package com.example.pixpalapp.service.Impl;
 
-import com.example.pixpalapp.config.CustomUserDetails;
-import com.example.pixpalapp.entity.User;
 import com.example.pixpalapp.dto.UserDto;
+import com.example.pixpalapp.entity.User;
 import com.example.pixpalapp.repository.UserRepository;
-import com.example.pixpalapp.service.StorageService;
+import com.example.pixpalapp.security.details.CustomUserDetails;
 import com.example.pixpalapp.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -27,37 +27,44 @@ public class UserServiceImpl implements UserService {
 
     PasswordEncoder passwordEncoder;
     UserRepository userRepository;
-    StorageService storageService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-        return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.get().getRole().getName())));
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .map(CustomUserDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
     @Override
-    @Transactional
     public void saveUser(UserDto userDto) {
-        User user = setAttributesFromDto(new User(), userDto);
+        User user = setAttributesFromRequest(new User(), userDto);
         userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public void updateUser(CustomUserDetails userDetails, MultipartFile file){
-        Optional<User> user = userRepository.findById(userDetails.getId());
-
-        user.ifPresent(value -> {
-            String filename = storageService.store(file);
-            value.setImagePath("/images/" + filename);
-            userRepository.save(value);
-        });
+    public void updateUser(User user, UserDto userDto) throws IOException {
+        user.setImage(userDto.getImage().getBytes());
+        userRepository.save(user);
     }
 
-    private User setAttributesFromDto(User user, UserDto dto) {
-        user.setEmail(dto.getEmail());
-        user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+    @Override
+    public User getUserFromPrincipal(Principal principal) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        String username = principal.getName();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        return optionalUser.orElseThrow(() ->
+                new UsernameNotFoundException("User not found with username: " + username));
+    }
+
+    private User setAttributesFromRequest(User user, UserDto userDto) {
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         return user;
     }

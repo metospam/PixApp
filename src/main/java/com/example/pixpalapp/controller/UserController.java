@@ -1,40 +1,48 @@
 package com.example.pixpalapp.controller;
 
-import com.example.pixpalapp.config.CustomUserDetails;
+import com.example.pixpalapp.dto.UserDto;
 import com.example.pixpalapp.entity.User;
-import com.example.pixpalapp.repository.UserRepository;
+import com.example.pixpalapp.payload.Request.UserUpdateRequest;
+import com.example.pixpalapp.payload.Response.UserResponse;
+import com.example.pixpalapp.service.StorageService;
 import com.example.pixpalapp.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.security.Principal;
 
-@Controller
+@RestController
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@RequestMapping("/profile")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
     UserService userService;
-    UserRepository userRepository;
+    StorageService storageService;
 
-    @GetMapping
-    public String profile(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        Optional<User> user = userRepository.findById(userDetails.getId());
-        user.ifPresent(value -> model.addAttribute("user", value));
+    @PutMapping
+    public ResponseEntity<String> handleUpdateUser(UserUpdateRequest userRequest, Principal principal) throws IOException {
+        User user = userService.getUserFromPrincipal(principal);
 
-        return "profile";
+        UserDto userDto = UserDto.builder()
+                .image(userRequest.getImage())
+                .build();
+
+        userService.updateUser(user, userDto);
+
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping
-    public String edit(@AuthenticationPrincipal CustomUserDetails userDetails, MultipartFile file){
-        userService.updateUser(userDetails, file);
-        return "redirect:/profile";
+    @GetMapping("/current")
+    public ResponseEntity<UserResponse> handleGetAuthUser(Principal principal) throws AccessDeniedException {
+        User user = userService.getUserFromPrincipal(principal);
+        String imageBase64 = storageService.encodeImage(user.getImage());
+
+        return ResponseEntity.ok(new UserResponse(imageBase64, user));
     }
 }

@@ -1,29 +1,21 @@
 package com.example.pixpalapp.dto;
 
-
-import com.example.pixpalapp.validator.PasswordConfirm;
-import com.example.pixpalapp.validator.UniqueEmail;
-import com.example.pixpalapp.validator.UniqueUsername;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
-@PasswordConfirm
-@UniqueEmail
-@UniqueUsername
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UserDto {
-
-    @NotBlank
-    private String username;
-
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    @Transient
-    private String confirmPassword;
+    String username;
+    String password;
+    String email;
+    String confirmPassword;
+    MultipartFile image;
 }

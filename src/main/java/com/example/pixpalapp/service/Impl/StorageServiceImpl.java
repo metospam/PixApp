@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -21,15 +22,19 @@ public class StorageServiceImpl implements StorageService {
         try {
             String fileName = file.getOriginalFilename();
 
-            // Define the path where you want to store the file
             Path destinationPath = Path.of(uploadPath + fileName);
 
-            // Copy the file to the destination path
             Files.copy(file.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
         } catch (IOException e) {
             return null;
         }
+    }
+
+    @Override
+    public String encodeImage(byte[] imageData) {
+        return imageData != null ?
+                Base64.getEncoder().encodeToString(imageData) : null;
     }
 }

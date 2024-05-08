@@ -1,10 +1,13 @@
 package com.example.pixpalapp.entity;
 
-
+import com.example.pixpalapp.converter.CellListConverter;
+import com.example.pixpalapp.model.Cell;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "drawings")
@@ -20,9 +23,10 @@ public class Drawing {
     @Column
     private String name;
 
-    @Column
-    private int size;
-
     @ManyToOne
     private User user;
+
+    @Convert(converter = CellListConverter.class)
+    @Column(columnDefinition = "json")
+    private List<Cell> cells;
 }

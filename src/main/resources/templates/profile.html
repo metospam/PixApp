@@ -11,12 +11,103 @@
 <form th:action="@{/profile}" method="POST" enctype="multipart/form-data">
     <div>
         <label>Avatar</label>
-        <input type="file" name="file" id="file" />
+        <input type="file" name="file" id="file"/>
         <!--        <p th:each="error: ${#fields.errors('firstName')}"-->
         <!--           th:text="${error}">Validation error</p>-->
     </div>
 
     <button type="submit">Submit</button>
 </form>
+
+<form th:action="@{/api/v1/palettes/create}" id="palette" method="POST">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name"/>
+    </div>
+
+    <div class="colors">
+        <div>
+            <label for="color1">Color1</label>
+            <input class="color-field" type="text" name="color1" id="color1"/>
+        </div>
+
+        <div>
+            <label for="color2">Color2</label>
+            <input class="color-field" type="text" name="color2" id="color2"/>
+        </div>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<span>Drawings:</span>
+<ul th:each="palette : ${palettes}">
+    <li>
+        <span th:text="${palette.name}"></span>
+        <ul th:each="color : ${palette.colors}">
+            <li th:text="${color.code}"></li>
+        </ul>
+    </li>
+</ul>
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="module" th:src="@{/scripts/App.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('js');
+
+        function paletteCreate() {
+            let form = document.querySelector('#palette');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    console.log('test');
+                    e.preventDefault();
+
+                    let nameInput = form.querySelector('[name="name"]');
+                    let colorsWrapper = form.querySelector('.colors');
+
+                    if (nameInput && colorsWrapper) {
+                        let name = nameInput.value;
+                        let colorsInputs = colorsWrapper.querySelectorAll('input');
+                        let colorsCodes = [];
+
+                        colorsInputs.forEach(colorInput => {
+                            colorInput.value && colorsCodes.push(colorInput.value);
+                        })
+
+                        if (colorsCodes && name) {
+                            let data = {
+                                name: name,
+                                colorsCodes: colorsCodes
+                            }
+
+                            axios.post('/api/v1/palettes/create', data)
+                                .then(function (response) {
+                                    location.reload();
+                                    console.log(response.data);
+                                })
+                                .catch(function (error) {
+                                    console.error(error);
+                                });
+                        }
+                    }
+                });
+            }
+        }
+        paletteCreate();
+
+        function chooseColor(){
+            const fields = document.querySelectorAll('.color-field');
+            if(fields){
+                fields.forEach(field => {
+                    new jscolor(field);
+                });
+            }
+        }
+        chooseColor();
+    });
+</script>
 </body>
 </html>
