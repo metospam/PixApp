@@ -1,21 +1,23 @@
-package com.example.pixpalapp.dto;
+package com.example.pixpalapp.dto.User;
 
+import com.example.pixpalapp.entity.Drawing;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
+    Long id;
     String username;
-    String password;
     String email;
-    String confirmPassword;
+    String password;
+    String passwordConfirmation;
     MultipartFile image;
+    Drawing drawing;
 }

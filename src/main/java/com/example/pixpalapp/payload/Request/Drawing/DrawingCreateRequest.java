@@ -1,7 +1,8 @@
-package com.example.pixpalapp.payload.Request;
+package com.example.pixpalapp.payload.Request.Drawing;
 
-import com.example.pixpalapp.validator.annotaion.ArrayNotEmpty;
+import com.example.pixpalapp.model.Cell;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -10,13 +11,11 @@ import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaletteCreateRequest {
+public class DrawingCreateRequest {
+
     @NotBlank
     String name;
 
-    @ArrayNotEmpty
-    List<String> colorsCodes;
-
-    @ArrayNotEmpty
-    List<String> tagsNames;
+    @NotEmpty
+    List<Cell> cells;
 }

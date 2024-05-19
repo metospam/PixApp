@@ -1,9 +1,9 @@
 package com.example.pixpalapp.controller;
 
-import com.example.pixpalapp.dto.UserDto;
+import com.example.pixpalapp.dto.User.UserDto;
 import com.example.pixpalapp.manager.ErrorManager;
 import com.example.pixpalapp.payload.Request.JwtRequest;
-import com.example.pixpalapp.payload.Request.UserCreateRequest;
+import com.example.pixpalapp.payload.Request.User.UserCreateRequest;
 import com.example.pixpalapp.payload.Response.JwtResponse;
 import com.example.pixpalapp.security.details.CustomUserDetails;
 import com.example.pixpalapp.security.jwt.JwtTokenProvider;
@@ -60,7 +60,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> handleRegisterUser(@RequestBody @Valid UserCreateRequest userRequest,
+    public ResponseEntity<String> handleRegisterUser(@RequestBody @Valid UserCreateRequest userRequest,
                                                 BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldErrors().get(0);
@@ -70,12 +70,12 @@ public class AuthController {
 
         UserDto userDto = UserDto.builder()
                 .username(userRequest.getUsername())
-                .password(userRequest.getPassword())
                 .email(userRequest.getEmail())
+                .password(userRequest.getPassword())
                 .build();
 
         userService.saveUser(userDto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("User created.");
     }
 }

@@ -22,6 +22,9 @@ public class Palette {
     @Column
     String name;
 
+    @Column(name = "is_public")
+    private boolean isPublic;
+
     @ManyToOne
     @JsonBackReference
     private User user;

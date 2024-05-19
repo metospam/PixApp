@@ -1,6 +1,6 @@
 package com.example.pixpalapp.validator;
 
-import com.example.pixpalapp.payload.Request.UserCreateRequest;
+import com.example.pixpalapp.payload.Request.User.UserCreateRequest;
 import com.example.pixpalapp.validator.annotaion.PasswordConfirm;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -10,7 +10,7 @@ public class PasswordConfirmValidator implements ConstraintValidator<PasswordCon
 
     @Override
     public boolean isValid(UserCreateRequest userRequest, ConstraintValidatorContext context) {
-        boolean valid = userRequest.getPassword().equals(userRequest.getPasswordConfirmation());
+        boolean valid = userRequest.getPassword().equals(userRequest.getConfirmPassword());
 
         if(!valid){
             context.disableDefaultConstraintViolation();

@@ -1,6 +1,6 @@
 package com.example.pixpalapp.service.Impl;
 
-import com.example.pixpalapp.dto.UserDto;
+import com.example.pixpalapp.dto.User.UserDto;
 import com.example.pixpalapp.service.AuthService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,10 @@
-package com.example.pixpalapp.payload.Request;
+package com.example.pixpalapp.payload.Request.User;
 
 import com.example.pixpalapp.validator.annotaion.PasswordConfirm;
 import com.example.pixpalapp.validator.annotaion.UniqueEmail;
 import com.example.pixpalapp.validator.annotaion.UniqueUsername;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -14,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 @UniqueUsername
 @UniqueEmail
 @PasswordConfirm
-@AllArgsConstructor
 public class UserCreateRequest {
 
     @NotBlank
@@ -27,5 +25,5 @@ public class UserCreateRequest {
     String password;
 
     @NotBlank
-    private String passwordConfirmation;
+    String confirmPassword;
 }

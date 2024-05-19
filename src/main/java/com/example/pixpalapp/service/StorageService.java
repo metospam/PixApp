@@ -1,8 +1,10 @@
 package com.example.pixpalapp.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.example.pixpalapp.model.Cell;
+
+import java.util.List;
 
 public interface StorageService {
-    String store(MultipartFile $file);
     String encodeImage(byte[] imageData);
+    byte[] convertCellsToImage(List<Cell> cells);
 }

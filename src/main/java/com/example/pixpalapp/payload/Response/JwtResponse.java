@@ -9,7 +9,5 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtResponse {
-
     String token;
-
 }

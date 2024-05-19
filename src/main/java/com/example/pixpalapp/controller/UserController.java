@@ -1,8 +1,8 @@
 package com.example.pixpalapp.controller;
 
-import com.example.pixpalapp.dto.UserDto;
+import com.example.pixpalapp.dto.User.UserDto;
 import com.example.pixpalapp.entity.User;
-import com.example.pixpalapp.payload.Request.UserUpdateRequest;
+import com.example.pixpalapp.payload.Request.User.UserUpdateRequest;
 import com.example.pixpalapp.payload.Response.UserResponse;
 import com.example.pixpalapp.service.StorageService;
 import com.example.pixpalapp.service.UserService;
@@ -30,12 +30,13 @@ public class UserController {
         User user = userService.getUserFromPrincipal(principal);
 
         UserDto userDto = UserDto.builder()
+                .username(userRequest.getUsername())
                 .image(userRequest.getImage())
                 .build();
 
         userService.updateUser(user, userDto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("User updated.");
     }
 
     @GetMapping("/current")

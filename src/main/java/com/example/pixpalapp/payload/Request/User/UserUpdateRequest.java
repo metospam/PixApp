@@ -1,4 +1,4 @@
-package com.example.pixpalapp.payload.Request;
+package com.example.pixpalapp.payload.Request.User;
 
 import com.example.pixpalapp.validator.annotaion.PasswordConfirm;
 import com.example.pixpalapp.validator.annotaion.UniqueEmail;
@@ -19,10 +19,4 @@ public class UserUpdateRequest {
     MultipartFile image;
     @NotBlank
     String username;
-    @NotBlank
-    String email;
-    @NotBlank
-    String password;
-    @NotBlank
-    private String confirmPassword;
 }

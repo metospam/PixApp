@@ -1,6 +1,6 @@
 package com.example.pixpalapp.validator;
 
-import com.example.pixpalapp.payload.Request.UserCreateRequest;
+import com.example.pixpalapp.payload.Request.User.UserCreateRequest;
 import com.example.pixpalapp.repository.UserRepository;
 import com.example.pixpalapp.validator.annotaion.UniqueUsername;
 import jakarta.validation.ConstraintValidator;

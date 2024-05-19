@@ -1,7 +1,6 @@
 package com.example.pixpalapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,12 +37,29 @@ public class User {
     @ManyToOne
     private Role role;
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<Drawing> drawings;
 
-    @JsonManagedReference
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "users_favorite_drawings",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "drawing_id")
+    )
+    private List<Drawing> favoriteDrawings;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Palette> palettes;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "users_favorite_palettes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "palette_id")
+    )
+    private List<Palette> favoritePalettes;
 }

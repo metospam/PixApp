@@ -8,8 +8,6 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 public class UserResponse {
-
     String imageBase64;
     User user;
-
 }
