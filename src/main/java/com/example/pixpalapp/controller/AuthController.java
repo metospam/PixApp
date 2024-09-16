@@ -63,6 +63,7 @@ public class AuthController {
     public ResponseEntity<String> handleRegisterUser(@RequestBody @Valid UserCreateRequest userRequest,
                                                 BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
+            
             FieldError fieldError = bindingResult.getFieldErrors().get(0);
 
             return ResponseEntity.unprocessableEntity().body(errorManager.displayError(fieldError));
